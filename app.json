@@ -1,0 +1,22 @@
+{
+    "devtools_port": 9090,
+    "startup_app": {
+        "name": "empty-app",
+        "uuid": "empty-app",
+        "url": "localhost:9000/index.html",
+        "applicationIcon": "asdf",
+        "autoShow": true,
+        "maximizable": false,
+        "minimizable": false
+    },
+    "runtime": {
+        "arguments": "",
+        "version" : "3.0.2.16"
+    },
+    "shortcut": {
+        "company": "CompanyName",
+        "description": "App Description",
+        "icon": "https://companyurl.com/icons/shortcut.ico",
+        "name": "appName-dev"
+    }
+}
