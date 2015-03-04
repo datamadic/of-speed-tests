@@ -16,14 +16,18 @@
 
 	socket.on('connect', function (data) {
 
-		fin.desktop.System.getConfig(function(sysInfo){
-			socket.emit('times', { 
-				ofInitialTime: ofInitialTime,
-				ofAfterLoaded: ofAfterLoaded,
-				runtimeVersion: fin.desktop.getVersion(),
-				sysInfo: sysInfo 
+		//fin.desktop.main(function(){
+			fin.desktop.System.getConfig(function(sysInfo){
+				socket.emit('times', { 
+					ofInitialTime: ofInitialTime,
+					ofAfterLoaded: ofAfterLoaded,
+					runtimeVersion: fin.desktop.getVersion(),
+					sysInfo: sysInfo 
+				});
 			});
-		});
+		//});
+
+			
 
 	});
 

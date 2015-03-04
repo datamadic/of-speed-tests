@@ -4,7 +4,9 @@ html
 	body
 		table
 			tr
-				th whatever
+				th App
+				th Total Time (s)
 			each val in results 
 				tr
-					td!= val.rvmInvoked
+					td!= val.name
+					td!= val.totalTime

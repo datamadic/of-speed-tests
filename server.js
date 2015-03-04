@@ -6,10 +6,27 @@ var express = require('express'),
     path = require('path'),
     loggingInfo = {},
     spawn = require('child_process').spawn,
+    rimraf = require('rimraf'),
     child,
     fs = require('fs'),
     MongoClient = require('mongodb').MongoClient,
-    url = 'mongodb://speed:speed@ds049171.mongolab.com:49171/heroku_app34521734';
+    url = 'mongodb://speed:speed@ds049171.mongolab.com:49171/heroku_app34521734',
+    Promise = require('es6-promise').Promise;//,
+    //q = require('q');
+
+// var rimrafPromise = function(paths){
+//     var deferred = q.defer();
+
+//     rimraf(paths, function(err){
+//         if (err){
+//             deferred.reject(err);
+//         }
+//         else {
+//             deferred.resolve();
+//         }
+//     });
+//     return deferred.promise;
+// };
 
 
 server.listen(9000);
@@ -27,8 +44,14 @@ io.on('connection', function (socket) {
     loggingInfo.runtimeVersion = data.runtimeVersion;
     loggingInfo.sysInfo = data.sysInfo;
     socket.emit('shutdown', 'true');
+    console.log('shutting down...');
     getLogs();
-    logToMongo();
+    logToMongo ();
+
+      // .then(function(){
+      //   console.log('hey ho')
+      //   logToMongo ()
+      // });
     //console.log(data);
   });
 });
@@ -48,22 +71,56 @@ child.on('close', function(){
   // logToMongo();
 });
 
+// function getLogs () {
+//   var rvmGrep = /(\d*\/\d*\/\d* \d*:\d*:\d*),(\d*)/,
+//       rvmLog = fs.readFileSync(
+//     path.resolve(path.dirname(config.rvmLocation), 'logs', 'RVM.log'), {
+//     encoding: 'utf8'
+//   }).split('\n').slice(0,1);
+
+//   loggingInfo.rvmInit = rvmGrep.exec(rvmLog.toString())[1];
+//   console.log(rvmLog.toString(), loggingInfo.rvmInit);
+
+//   var runtimeGrep = /(\d*\/\d*\/\d* \d*:\d*:\d*)/,
+//       runtimeLog = fs.readFileSync(
+//     path.resolve(path.dirname(config.rvmLocation), 'cache', loggingInfo.runtimeVersion, 'desktop-'+ loggingInfo.runtimeVersion, 'debug.log'), {
+//     encoding: 'utf8'
+//   }).split('\n').slice(0,1);
+//   loggingInfo.runtimeInit = runtimeGrep.exec(runtimeLog.toString())[1];
+//   //console.log(loggingInfo);
+// }
+
 function getLogs () {
-  var rvmGrep = /(\d*\/\d*\/\d* \d*:\d*:\d*),(\d*)/,
-      rvmLog = fs.readFileSync(
-    path.resolve(path.dirname(config.rvmLocation), 'logs', 'RVM.log'), {
-    encoding: 'utf8'
-  }).split('\n').slice(0,1);
+  console.log('callcalled')
+  //return new Promise(function(resolve, reject){
 
-  loggingInfo.rvmInit = rvmGrep.exec(rvmLog.toString())[1];
-  console.log(rvmLog.toString(), loggingInfo.rvmInit);
+    var //__rvmGrep = /(\d*\/\d*\/\d* \d*:\d*:\d*),(\d*)/,
+        //rvmGrep = /(\d*\/\d*\/\d* \d*:\d*:\d*),(\d*)/,,
+        rvmGrep = /(\d*)\/(\d*)\/(\d*) (\d*):(\d*):(\d*),(\d*)/,
+        rvmLog = fs.readFileSync(
+          path.resolve(__dirname, 'logs', 'RVM.log'), {
+          encoding: 'utf8'
+        }).split('\n').slice(0,1),
+        dateArray = rvmGrep.exec(rvmLog.toString());
 
-  var runtimeGrep = /(\d*\/\d*\/\d* \d*:\d*:\d*)/,
-      runtimeLog = fs.readFileSync(
-    path.resolve(path.dirname(config.rvmLocation), 'cache', loggingInfo.runtimeVersion, 'desktop-'+ loggingInfo.runtimeVersion, 'debug.log'), {
-    encoding: 'utf8'
-  }).split('\n').slice(0,1);
-  loggingInfo.runtimeInit = runtimeGrep.exec(runtimeLog.toString())[1];
+    //loggingInfo.rvmInit = (new Date(dateArray[3], dateArray[2], dateArray[1], dateArray[4], dateArray[5], dateArray[6], dateArray[7] )).toString(); 
+    loggingInfo.rvmInit = Date.apply(Date, dateArray.slice(-1));// (dateArray[3], dateArray[2], dateArray[1], dateArray[4], dateArray[5], dateArray[6], dateArray[7] )).toString(); 
+    console.log(rvmLog.toString(), loggingInfo.rvmInit);
+
+    var runtimeGrep = /(\d*)\/(\d*)\/(\d*) (\d*):(\d*):(\d*)/,
+        runtimeLog = fs.readFileSync(
+          path.resolve(path.dirname(config.rvmLocation), 'cache', loggingInfo.runtimeVersion, 'desktop-'+ loggingInfo.runtimeVersion, 'debug.log'), {
+          encoding: 'utf8'
+        }).split('\n').slice(0,1),
+        runtimeDateArray = runtimeGrep.exec(runtimeLog.toString());
+
+    loggingInfo.runtimeInit = Date.apply(Date, runtimeDateArray.slice(-1));
+
+    console.log('waka waka');
+    //resolve();
+  //});
+
+  
   //console.log(loggingInfo);
 }
 

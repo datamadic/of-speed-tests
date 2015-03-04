@@ -11,9 +11,17 @@ app.set('view engine', 'jade');
 app.use(express.static(__dirname));
 
 app.get('/display.html', function (req, res) {
+	console.log('asking');
   queryTimes()
   	.then(function(results){
-	  	res.render('display', {results: results});
+  		
+  		var times = results.map(function(result){
+	  			return {
+		  			totalTime: (parseInt(result.appLoaded) - (new Date(result.rvmInvoked)).getTime()) / 1000,
+		  			name: result.sysInfo.startup_app.name
+		  		};
+	  		});
+	  	res.render('display', {results: times});
 	  },
 	  function(reason){
 	  	res.json({reason: reason});
@@ -23,7 +31,7 @@ app.get('/display.html', function (req, res) {
 app.get('/data', function (req, res) {
   queryTimes()
   	.then(function(results){
-	  	res.render('display', {results: results});
+	  	res.json(results);
 	  },
 	  function(reason){
 	  	res.json({reason: reason});
@@ -50,6 +58,7 @@ function queryTimes() {
 		        }
 
 	          db.close();
+	          console.log('resolving');
 	          resolve(results);
 	        });
 	    });
