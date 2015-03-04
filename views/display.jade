@@ -5,8 +5,13 @@ html
 		table
 			tr
 				th App
+				th Runtime Version
 				th Total Time (s)
+				th Date Run
 			each val in results 
 				tr
-					td!= val.name
+					td
+						a(href='details.html/#{val._id}')!= val.name
+					td!= val.runtimeVersion
 					td!= val.totalTime
+					td!= val.date

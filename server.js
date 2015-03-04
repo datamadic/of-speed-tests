@@ -71,32 +71,12 @@ child.on('close', function(){
   // logToMongo();
 });
 
-// function getLogs () {
-//   var rvmGrep = /(\d*\/\d*\/\d* \d*:\d*:\d*),(\d*)/,
-//       rvmLog = fs.readFileSync(
-//     path.resolve(path.dirname(config.rvmLocation), 'logs', 'RVM.log'), {
-//     encoding: 'utf8'
-//   }).split('\n').slice(0,1);
-
-//   loggingInfo.rvmInit = rvmGrep.exec(rvmLog.toString())[1];
-//   console.log(rvmLog.toString(), loggingInfo.rvmInit);
-
-//   var runtimeGrep = /(\d*\/\d*\/\d* \d*:\d*:\d*)/,
-//       runtimeLog = fs.readFileSync(
-//     path.resolve(path.dirname(config.rvmLocation), 'cache', loggingInfo.runtimeVersion, 'desktop-'+ loggingInfo.runtimeVersion, 'debug.log'), {
-//     encoding: 'utf8'
-//   }).split('\n').slice(0,1);
-//   loggingInfo.runtimeInit = runtimeGrep.exec(runtimeLog.toString())[1];
-//   //console.log(loggingInfo);
-// }
 
 function getLogs () {
   console.log('callcalled')
   //return new Promise(function(resolve, reject){
 
-    var //__rvmGrep = /(\d*\/\d*\/\d* \d*:\d*:\d*),(\d*)/,
-        //rvmGrep = /(\d*\/\d*\/\d* \d*:\d*:\d*),(\d*)/,,
-        rvmGrep = /(\d*)\/(\d*)\/(\d*) (\d*):(\d*):(\d*),(\d*)/,
+    var rvmGrep = /(\d*)\/(\d*)\/(\d*) (\d*):(\d*):(\d*),(\d*)/,
         rvmLog = fs.readFileSync(
           path.resolve(__dirname, 'logs', 'RVM.log'), {
           encoding: 'utf8'
